@@ -1,0 +1,26 @@
+{
+  "version": "lab-1",
+  "config": { "version": "controlled-1", "mode": "synthetic-renderer", "promptVersion": "quote-source-1" },
+  "documents": [
+    { "id": "refund-old", "revision": "1", "topic": "refund", "state": "archived", "text": "Refund period: 30 days." },
+    { "id": "refund-current", "revision": "2", "topic": "refund", "state": "active", "text": "Refund period: 14 days." },
+    { "id": "shipping-current", "revision": "1", "topic": "shipping", "state": "active", "text": "Shipping takes 3 days." },
+    { "id": "legacy-old", "revision": "1", "topic": "legacy", "state": "archived", "text": "Legacy service is available." }
+  ],
+  "accounts": { "A-100": "active", "A-200": "suspended" },
+  "recordedJudgements": {
+    "Policy: Refund period: 30 days.": { "score": 0.95, "rationale": "Fluent and specific answer.", "recording": "judge-fixture-1", "provenance": "authored-synthetic-example-not-a-real-model-run" },
+    "Policy: Refund period: 14 days.": { "score": 0.92, "rationale": "Clear answer.", "recording": "judge-fixture-2", "provenance": "authored-synthetic-example-not-a-real-model-run" }
+  },
+  "cases": [
+    { "id": "refund", "request": { "kind": "policy", "topic": "refund" }, "expected": { "status": "ok", "text": "Policy: Refund period: 14 days.", "citation": "refund-current" } },
+    { "id": "shipping", "request": { "kind": "policy", "topic": "shipping" }, "expected": { "status": "ok", "text": "Policy: Shipping takes 3 days.", "citation": "shipping-current" } },
+    { "id": "legacy", "request": { "kind": "policy", "topic": "legacy" }, "expected": { "status": "refused", "modelCalls": 0 } },
+    { "id": "unsupported", "request": { "kind": "policy", "topic": "unknown" }, "expected": { "status": "refused", "modelCalls": 0 } }
+  ],
+  "regression": [
+    { "id": "active-account", "request": { "kind": "account", "accountId": "A-100" }, "expected": { "status": "ok", "text": "Status naloga: active.", "modelCalls": 0 } },
+    { "id": "suspended-account", "request": { "kind": "account", "accountId": "A-200" }, "expected": { "status": "ok", "text": "Status naloga: suspended.", "modelCalls": 0 } },
+    { "id": "invalid", "request": null, "expected": { "status": "invalid", "modelCalls": 0 } }
+  ]
+}

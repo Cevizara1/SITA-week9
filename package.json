@@ -1,0 +1,17 @@
+{
+  "name": "support-reliability-lab",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=24.0.0" },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc",
+    "start": "npm run build && node scripts/run.mjs ask",
+    "evaluate": "npm run build && node scripts/run.mjs evaluate",
+    "regression": "npm run build && node scripts/run.mjs regression",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "compare": "node scripts/compare.mjs"
+  },
+  "devDependencies": { "typescript": "5.9.2" }
+}
