@@ -54,7 +54,11 @@ export function answer(input: unknown, dependencies: Dependencies): Answer {
   if (request.kind !== "policy" || typeof request.topic !== "string" || !request.topic.trim()) {
     return result("invalid", "Nedostaje tema.");
   }
-  const source = dependencies.documents.find(document => document.topic === request.topic);
+  // H1: only an active source of the requested topic is acceptable. Archived sources are never
+  // used (not even as a fallback), so a topic with no active source is refused before the model runs.
+  const source = dependencies.documents.find(
+    document => document.topic === request.topic && document.state === "active"
+  );
   if (!source) {
     return result("refused", "Nema odgovarajućeg izvora.");
   }

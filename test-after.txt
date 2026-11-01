@@ -1,0 +1,11 @@
+✔ active source wins over an archived source listed earlier (topic != refund) (2.1482ms)
+✔ topic with only archived sources is refused without model execution (0.3166ms)
+✔ an active source of a different topic is not an acceptable source (0.237ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 107.1991
