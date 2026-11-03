@@ -6,8 +6,8 @@ Priloženi su automatski `report.json`, `summary.md` i direktorijumi tragova (u 
 
 ## Promena i hipoteza
 
-- **Članovi para i ko ove nedelje vodi prikaz:** _[Ime člana 1]_ (vodi prikaz), _[Ime člana 2]_ — popuniti.
-- **Polazni/završni commit i putanje izveštaja:** polazni `a81ad25` (neizmenjen starter), završni `3c765a6` (izmena + test). Oba POSLE izveštaja beleže `git.dirty: false`.
+- **Članovi para i ko ove nedelje vodi prikaz:** Anja Hubač (vodi prikaz), Aleksa Čevizović.
+- **Polazni/završni commit i putanje izveštaja:** polazni `a81ad25` (neizmenjen starter), završni `3c765a6` (izmena + test). Oba POSLE izveštaja beleže `git.dirty: false`. Kasniji commit-ovi dodaju samo belešku i dokaze; `src/` i `tests/` ostaju isti kao u `3c765a6`.
   - PRE: `runs/evaluate-9b9e8e10-…`, `runs/regression-e3e614f7-…`
   - POSLE: `runs/evaluate-63f69849-…`, `runs/regression-4f1fdae6-…`
 - **Opažanje → hipoteza:** Za temu `refund` izabran je izvor `refund-old` (revizija 1); u `data/lab.json` taj ID i revizija imaju `state: "archived"`. Odgovor kaže „30 days”, a kriterijum zahteva aktivan izvor `refund-current` (revizija 2, „14 days”) i njegov citat. Trag (`traces/refund.json`) pokazuje *koji* izvor je upotrebljen, ali ne i *zašto*. Uzrok smo potražili u kodu: policy grana u `src/app.ts` radi `documents.find(d => d.topic === topic)` — uzima **prvi** dokument teme i nikad ne gleda `state`. Isti uzrok objašnjava i `legacy`: jedini dokument je arhiviran, pa se umesto `refused` vraća odgovor, a arhivirani izvor se šalje modelu (`modelCalls: 1`). Problem nije u „modelu” ni u promptu — kontrolisana modelska funkcija samo prepisuje tekst izvora koji joj aplikacija preda.
@@ -36,7 +36,8 @@ Priloženi su automatski `report.json`, `summary.md` i direktorijumi tragova (u 
   - D1 iznad (za ceo servis).
   - Više aktivnih izvora iste teme: biramo prvi u listi, bez poređenja revizija. Ugovor to ne definiše; nismo izmišljali pravilo, ali je to neproverena granica.
   - Tema se poredi tačnim stringom (`Refund` ≠ `refund`).
-  - Modelska funkcija je deterministička zamena koja prepisuje izvor: ne znamo da li bi pravi LLM verno preneo sadržaj aktivnog izvora, ništa o latenciji, ceni ni stopi grešaka. Skup ima 4/7 slučajeva — nema osnova za tvrdnju o stvarnoj stopi greške ili SLO-u.
+  - Modelska funkcija je deterministička zamena koja prepisuje izvor: ne znamo da li bi pravi LLM verno preneo sadržaj aktivnog izvora, ništa o latenciji, ceni ni stopi grešaka. Javni skup ima 4, a regresioni 7 slučajeva — nema osnova za tvrdnju o stvarnoj stopi greške ili SLO-u.
+  - Otkaz modela nije u javnom ni u regresionom skupu. Po čitanju `src/app.ts` očekujemo `unavailable` bez citata, ali to izvršavanjem nismo proverili, pa je ovo neproverena granica.
   - `state` se proverava u trenutku izbora iz liste koju dobijemo; ne znamo koliko je ta lista sveža.
 - **Signal za praćenje, uslov i reakcija:**
   - *Signal:* za svaki `ok` policy odgovor, uzeti `sourceId` + `revision` iz `retrieval` događaja i u **istom skladištu dokumenata, u trenutku odgovora**, proveriti da je taj dokument `active` i da je to tekuća aktivna revizija za temu. Brojati odgovore koji citiraju neaktivan izvor.
@@ -48,8 +49,8 @@ Priloženi su automatski `report.json`, `summary.md` i direktorijumi tragova (u 
 ## AI pomoć i pojedinačni doprinos
 
 - **Za šta smo koristili AI:** Umesto Codex-a korišćen je Claude Code (Anthropic). Pročitao je kod i dokaze, predložio hipotezu i povezao je sa konkretnom linijom u `src/app.ts` i tragom, napisao test i jednolinijsku izmenu i pokrenuo merenja. Prihvaćeno: allowlist uslov bez rezerve. Odbačeno/izbegnuto: specijalni slučaj za refund, menjanje redosleda u `lab.json`, uvođenje pravila za više aktivnih revizija (nije u ugovoru). Proverili smo kako je opisano u odeljku „Šta AI nije mogao nezavisno da potvrdi”.
-- **Član 1:** _[popuniti — konkretan doprinos i rezultat koji je lično ponovo pokrenuo/proverio]_
-- **Član 2:** _[popuniti — konkretan doprinos i rezultat koji je lično ponovo pokrenuo/proverio]_
+- **Aleksa Čevizović:** Koraci 5–8, izvršeni uz Claude Code. Opis promene sa hipotezom da policy grana uzima prvi dokument teme i ne gleda `state`, uz granicu izmene bez specijalnog slučaja za refund. Dodatni test `tests/source-eligibility.test.mjs` sa sopstvenom temom `warranty`, koji pada 0/3 na starom kodu (`test-before.txt`) i prolazi 3/3 posle izmene (`test-after.txt`). Ograničena izmena uslova izbora u `src/app.ts`, tako da se prihvata samo aktivan izvor tražene teme. Završna merenja i poređenje: evaluacija 2/4 → 4/4, regresija 5/7 → 7/7, `refund` koristi `refund-current`, reviziju 2, a `legacy` je `refused` sa `modelCalls: 0`. Preporuka za izdanje u simulaciji samo za policy putanju, signal za praćenje i slanje svih commit-ova sa svog naloga. Dokazi su nastali na njegovom računaru (Windows, Node 24.12.0), uz Claude Code: `test-before.txt`, `test-after.txt` i izveštaji u `runs/`. Lično provereno: pregledan diff `src/app.ts`, očekivanja u novom testu upoređena sa ugovorom, potvrđeno da test pada pre izmene i prolazi posle nje, pregledan završni trag `refund` i `legacy` sa `modelCalls: 0`.
+- **Anja Hubač:** Koraci 1–4: vođenje i diktiranje rada preko Discord-a, bez sopstvenih commit-ova. Pregled predaje uz Claude Code u odnosu na zahteve zadatka, ispravke beleške (završni commit, opis skupova, otkaz modela kao neproverena granica) i vođenje prikaza para. Lično provereno: trag `refund` (`refund-old`, revizija 1) povezan sa arhiviranim dokumentom u `data/lab.json`; na svežem klonu (macOS, Node 26.8.1), na završnom `src/app.ts`: `npm ci` uspešno, `npm run evaluate` → 4/4, `npm run regression` → 7/7.
 
 ## Dopuna u sredu
 
