@@ -1,0 +1,15 @@
+[
+  {
+    "stage": "retrieval",
+    "sourceId": "refund-old",
+    "revision": "1"
+  },
+  {
+    "stage": "model",
+    "outcome": "returned"
+  },
+  {
+    "stage": "response",
+    "outcome": "ok"
+  }
+]

@@ -1,0 +1,10 @@
+[
+  {
+    "stage": "lookup",
+    "outcome": "found"
+  },
+  {
+    "stage": "response",
+    "outcome": "ok"
+  }
+]

@@ -1,0 +1,276 @@
+{
+  "schema": "support-lab-run-1",
+  "runId": "regression-4f1fdae6-3518-495b-9c78-75feebe83598",
+  "createdAt": "2026-11-01T19:03:57.538Z",
+  "node": "v24.12.0",
+  "git": {
+    "revision": "3c765a6965afa6783011956a65754fce5c1a0a6b",
+    "dirty": false
+  },
+  "source": {
+    "src\\app.ts": "711accfb10f6ccf0aa877f00f23e2d5ae2afc7c1718f328e33ec51b21c39442e"
+  },
+  "built": {
+    "dist\\app.d.ts": "b4eca7521f55c78652704207e4695bc48aa50a3bdd21e064e68e00d2622f5fce",
+    "dist\\app.js": "8c8c9d27a9539610da243823c804eddb7687c3baa40d2291617930afd10a52f8"
+  },
+  "data": {
+    "data\\lab.json": "0593e6a9975db6a2723e47d6f842e9504f40fb713241a6425d4f561b1d993aef"
+  },
+  "scripts": {
+    "scripts\\compare.mjs": "c1bfd7b2651ff56e1fefc9a27d7db3fc9dd8fb6752e8a6aab48599540f24bc3d",
+    "scripts\\evidence.mjs": "b15fbf1f302e1f5430e481c2af46010490c562c6920f1ae307dcf9cc3de820a6",
+    "scripts\\run.mjs": "6dee4c0e843419d8207e3e8c0f89dbc89a8ad359d98b3cfbae386a21ffa37d9b"
+  },
+  "tests": {
+    "tests\\app.test.mjs": "454d3cff2b044514f4194ee5ea789ab1b3cbecf58e4528a5d31dee8de80d59d9",
+    "tests\\source-eligibility.test.mjs": "952671f7f80ee6dc602cbfea20335a0004e72922a332abe0cd8cfdfbbe6b97b0"
+  },
+  "toolchain": {
+    "package.json": "9fb06df3dbe79ff804a87cc583c083d03ee5e2c75b97c6cb28c94d4a056951f0",
+    "package-lock.json": "3dce9ad2cf02f0d23edb4205c03bce4cc7e6dc1f676996974b4f3eb3edc3c524",
+    "tsconfig.json": "03bf4b1ce8e27fc08c0a975cead5d77f00a5e84cdc5011c12c8a80a0c216c41f"
+  },
+  "label": "regression",
+  "config": {
+    "version": "controlled-1",
+    "mode": "synthetic-renderer",
+    "promptVersion": "quote-source-1"
+  },
+  "passed": 7,
+  "total": 7,
+  "results": [
+    {
+      "id": "refund",
+      "request": {
+        "kind": "policy",
+        "topic": "refund"
+      },
+      "actual": {
+        "status": "ok",
+        "text": "Policy: Refund period: 14 days.",
+        "citations": [
+          "refund-current"
+        ],
+        "trace": [
+          {
+            "stage": "retrieval",
+            "sourceId": "refund-current",
+            "revision": "2"
+          },
+          {
+            "stage": "model",
+            "outcome": "returned"
+          },
+          {
+            "stage": "response",
+            "outcome": "ok"
+          }
+        ]
+      },
+      "modelCalls": 1,
+      "lookupCalls": 0,
+      "checks": {
+        "status": true,
+        "text": true,
+        "citation": true
+      },
+      "passed": true,
+      "weakCheck": true,
+      "recordedJudge": {
+        "score": 0.92,
+        "rationale": "Clear answer.",
+        "recording": "judge-fixture-2",
+        "provenance": "authored-synthetic-example-not-a-real-model-run"
+      },
+      "trace": "traces/refund.json"
+    },
+    {
+      "id": "shipping",
+      "request": {
+        "kind": "policy",
+        "topic": "shipping"
+      },
+      "actual": {
+        "status": "ok",
+        "text": "Policy: Shipping takes 3 days.",
+        "citations": [
+          "shipping-current"
+        ],
+        "trace": [
+          {
+            "stage": "retrieval",
+            "sourceId": "shipping-current",
+            "revision": "1"
+          },
+          {
+            "stage": "model",
+            "outcome": "returned"
+          },
+          {
+            "stage": "response",
+            "outcome": "ok"
+          }
+        ]
+      },
+      "modelCalls": 1,
+      "lookupCalls": 0,
+      "checks": {
+        "status": true,
+        "text": true,
+        "citation": true
+      },
+      "passed": true,
+      "weakCheck": true,
+      "recordedJudge": null,
+      "trace": "traces/shipping.json"
+    },
+    {
+      "id": "legacy",
+      "request": {
+        "kind": "policy",
+        "topic": "legacy"
+      },
+      "actual": {
+        "status": "refused",
+        "text": "Nema odgovarajućeg izvora.",
+        "citations": [],
+        "trace": [
+          {
+            "stage": "response",
+            "outcome": "refused"
+          }
+        ]
+      },
+      "modelCalls": 0,
+      "lookupCalls": 0,
+      "checks": {
+        "status": true,
+        "modelCalls": true
+      },
+      "passed": true,
+      "weakCheck": true,
+      "recordedJudge": null,
+      "trace": "traces/legacy.json"
+    },
+    {
+      "id": "unsupported",
+      "request": {
+        "kind": "policy",
+        "topic": "unknown"
+      },
+      "actual": {
+        "status": "refused",
+        "text": "Nema odgovarajućeg izvora.",
+        "citations": [],
+        "trace": [
+          {
+            "stage": "response",
+            "outcome": "refused"
+          }
+        ]
+      },
+      "modelCalls": 0,
+      "lookupCalls": 0,
+      "checks": {
+        "status": true,
+        "modelCalls": true
+      },
+      "passed": true,
+      "weakCheck": true,
+      "recordedJudge": null,
+      "trace": "traces/unsupported.json"
+    },
+    {
+      "id": "active-account",
+      "request": {
+        "kind": "account",
+        "accountId": "A-100"
+      },
+      "actual": {
+        "status": "ok",
+        "text": "Status naloga: active.",
+        "citations": [],
+        "trace": [
+          {
+            "stage": "lookup",
+            "outcome": "found"
+          },
+          {
+            "stage": "response",
+            "outcome": "ok"
+          }
+        ]
+      },
+      "modelCalls": 0,
+      "lookupCalls": 1,
+      "checks": {
+        "status": true,
+        "text": true,
+        "modelCalls": true
+      },
+      "passed": true,
+      "weakCheck": true,
+      "recordedJudge": null,
+      "trace": "traces/active-account.json"
+    },
+    {
+      "id": "suspended-account",
+      "request": {
+        "kind": "account",
+        "accountId": "A-200"
+      },
+      "actual": {
+        "status": "ok",
+        "text": "Status naloga: suspended.",
+        "citations": [],
+        "trace": [
+          {
+            "stage": "lookup",
+            "outcome": "found"
+          },
+          {
+            "stage": "response",
+            "outcome": "ok"
+          }
+        ]
+      },
+      "modelCalls": 0,
+      "lookupCalls": 1,
+      "checks": {
+        "status": true,
+        "text": true,
+        "modelCalls": true
+      },
+      "passed": true,
+      "weakCheck": true,
+      "recordedJudge": null,
+      "trace": "traces/suspended-account.json"
+    },
+    {
+      "id": "invalid",
+      "request": null,
+      "actual": {
+        "status": "invalid",
+        "text": "Neispravan zahtev.",
+        "citations": [],
+        "trace": [
+          {
+            "stage": "response",
+            "outcome": "invalid"
+          }
+        ]
+      },
+      "modelCalls": 0,
+      "lookupCalls": 0,
+      "checks": {
+        "status": true,
+        "modelCalls": true
+      },
+      "passed": true,
+      "weakCheck": true,
+      "recordedJudge": null,
+      "trace": "traces/invalid.json"
+    }
+  ]
+}
